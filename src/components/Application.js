@@ -10,7 +10,23 @@ export default function Application(props) {
   
 
   const setDay = day => setState(prev => ({ ...prev, day }));
-  // const setDays = days => setState(prev => ({ ...prev, days }));
+
+  function bookInterview(id, interview) {
+    console.log("book", id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    axios.put(`/api/appointments/${id}`,interview)
+      .then(res => setState({...state, appointments}))
+  }
+
 
   const [state, setState] = useState({
     day: "Monday",
@@ -49,6 +65,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
       />
     );
   });
