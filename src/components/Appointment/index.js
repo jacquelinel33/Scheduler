@@ -4,30 +4,52 @@ import Header from './Header'
 import Show from './Show'
 import Empty from './Empty'
 import Form from './Form'
+import Saving from './Saving'
+import Deleting from  './Deleting'
+import Confirm from './Confirm'
 import useVisualMode from '../../hooks/useVisualMode'
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
-// const DELETE = "DELETE";
-// const SAVE = "SAVE";
-// CONST CONFIRM = "CONFIRM"
+const SAVING = "SAVING";
+const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
+const ERROR = "ERROR";
+
 
 export default function Appointment (props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
+
   const save = (name, interviewer) => {
     const interview = {
       student: name,
       interviewer
     };
-    props.bookInterview(props.id ,interview)
-    .then(()=> {
-      transition(SHOW)
-    })
+    transition(SAVING);
+    props.bookInterview(props.id, interview)
+      .then (() => transition(SHOW))
+      .catch(err=>transition(ERROR));
+  }
 
+  //show confirm form, if cancel, go back, if confirm, show delete. when its been deleted from api, transition to empty
+  function toDelete(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    }
+    transition(DELETING)
+    props.cancelInterview(props.id, interview)
+      .then(()=>transition(EMPTY))
+      .catch(err=>console.log(err));
+  }
+
+  const edit = () => {
+    transition(EDIT)
   }
 
   return (
@@ -38,7 +60,10 @@ export default function Appointment (props) {
       {mode === SHOW && (
         <Show
           student={props.interview.student}
-          interviewer={props.interview.interviewer}/>)}
+          interviewer={props.interview.interviewer}
+          onDelete={()=> transition(CONFIRM)}
+          onEdit={edit}/>
+        )}
       {mode === CREATE && (
         <Form 
           interviewers={props.interviewers}
@@ -46,6 +71,26 @@ export default function Appointment (props) {
           onSave={save}
           />
         )}  
+      {mode === SAVING && (
+        <Saving
+          message="saving"/>
+        )}
+      {mode === DELETING && (
+        <Deleting
+          message="deleting"/>
+        )}
+
+    {mode === CONFIRM && (
+      <Confirm
+      message="Are you sure you would like to delete?"
+      onCancel={()=>transition(SHOW)}
+      onConfirm={toDelete}/>
+    )}
+    {mode === EDIT && (
+      <Form 
+        
+        />
+    )}
     </article>
     </Fragment>
   )

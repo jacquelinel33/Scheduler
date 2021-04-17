@@ -34,9 +34,10 @@ export default function Form (props) {
     <form autoComplete="off" onSubmit={event => event.preventDefault()}>
       <input
         className="appointment__create-input text--semi-bold"
-        name={props.name}
+        name="name"
         type="text"
         placeholder="Enter Student Name"
+        value={name}
         onChange={(event) => setName(event.target.value)}
         /*
           This must be a controlled component
@@ -45,8 +46,10 @@ export default function Form (props) {
     </form >
     <InterviewerList 
       interviewers={props.interviewers} 
-      value={interviewer} 
-      onChange={(event) => setInterviewer(event)}
+      interviewer={interviewer}
+      // value={interviewer} 
+      // onChange={(event) => setInterviewer(event)}
+      setInterviewer={setInterviewer}
       />
   </section>
   <section className="appointment__card-right">
