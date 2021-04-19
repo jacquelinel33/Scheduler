@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import './styles.scss';
 import Header from './Header'
 import Show from './Show'
@@ -7,23 +7,26 @@ import Form from './Form'
 import Saving from './Saving'
 import Deleting from  './Deleting'
 import Confirm from './Confirm'
+import Error from './Error'
 import useVisualMode from '../../hooks/useVisualMode'
-
-const EMPTY = "EMPTY";
-const SHOW = "SHOW";
-const CREATE = "CREATE";
-const SAVING = "SAVING";
-const DELETING = "DELETING";
-const CONFIRM = "CONFIRM";
-const EDIT = "EDIT";
-const ERROR = "ERROR";
 
 
 export default function Appointment (props) {
+  const EMPTY = "EMPTY";
+  const SHOW = "SHOW";
+  const CREATE = "CREATE";
+  const SAVING = "SAVING";
+  const DELETING = "DELETING";
+  const CONFIRM = "CONFIRM";
+  const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE"
+  const ERROR_DELETE = "ERROR_DELETE"
+
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
+  console.log("props.interview",props.interview);
 
   const save = (name, interviewer) => {
     const interview = {
@@ -31,43 +34,53 @@ export default function Appointment (props) {
       interviewer
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview)
-      .then (() => transition(SHOW))
-      .catch(err=>transition(ERROR));
+    props
+      .bookInterview(props.id, interview)
+      .then (() => {console.log("transition show")
+                    transition(SHOW)})
+      .catch(err=>{console.log("error", err.message)
+        transition(ERROR_SAVE, true)});
   }
 
-  //show confirm form, if cancel, go back, if confirm, show delete. when its been deleted from api, transition to empty
-  function toDelete(name, interviewer) {
+  const toDelete = (name, interviewer) => {
     const interview = {
       student: name,
       interviewer
     }
-    transition(DELETING)
-    props.cancelInterview(props.id, interview)
-      .then(()=>transition(EMPTY))
-      .catch(err=>console.log(err));
+    transition(DELETING, true)
+    props
+      .cancelInterview(props.id, interview)
+      .then(() => transition(EMPTY))
+      .catch(err => transition(ERROR_DELETE, true));
   }
 
   const edit = () => {
     transition(EDIT)
   }
 
+  const confirm = () => {
+    transition(CONFIRM)
+  }
+
+
   return (
     <Fragment>
     <article className="appointment">
       <Header time={props.time}/>
-      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === EMPTY && (
+        <Empty onAdd={() => transition(CREATE)} />
+        )}
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onDelete={()=> transition(CONFIRM)}
+          onDelete={confirm}
           onEdit={edit}/>
         )}
       {mode === CREATE && (
         <Form 
           interviewers={props.interviewers}
-          onCancel={()=> back(EMPTY)}  
+          onCancel={back}  
           onSave={save}
           />
         )}  
@@ -88,8 +101,22 @@ export default function Appointment (props) {
     )}
     {mode === EDIT && (
       <Form 
-        
+        name={props.interview.student}
+        interviewer={props.interview.interviewer.id}
+        interviewers={props.interviewers}
+        onCancel={back}
+        onSave={save}
         />
+    )}
+    {mode === ERROR_SAVE && (
+      <Error  
+        message="Error Saving"
+        onClose={()=>transition(SHOW)}/>
+    )}
+    {mode === ERROR_DELETE && (
+      <Error  
+        message="Error Deleting"
+        onClose={()=>transition(SHOW)}/>
     )}
     </article>
     </Fragment>
