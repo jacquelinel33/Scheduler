@@ -24,7 +24,7 @@ export function getInterview(state, interview) {
 export function getInterviewersForDay(state, day) {
   const foundData = state.days.find(obj => obj.name === day)
   if (foundData) {
-    const matchingInterviews = foundData.interviewers.map(id => {console.log("id", id)
+    const matchingInterviews = foundData.interviewers.map(id => {
       return state.interviewers[id]})
     return matchingInterviews
   } else {

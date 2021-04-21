@@ -56,7 +56,7 @@ export default function useApplicationData() {
       appointments
     })
   })
-  .catch(err=> console.log("in book interview", err.message))
+  .catch(err=> err.message)
 }
 
   function cancelInterview (id) {
@@ -94,7 +94,7 @@ const updateSpots = (appointments) => {
   // const newState = {...state}
 
   const currentDay = state.days.find(day => day.name === state.day);
-  console.log("current day", currentDay);
+  
   const listOfAppointmentsForADay = currentDay.appointments;
   const emptyAppointments = listOfAppointmentsForADay.filter(appointmentId => appointments[appointmentId].interview === null);
 

@@ -26,7 +26,7 @@ export default function Appointment (props) {
     props.interview ? SHOW : EMPTY
   );
 
-  console.log("props.interview",props.interview);
+  // console.log("props.interview",props.interview);
 
   const save = (name, interviewer) => {
     const interview = {
@@ -36,7 +36,7 @@ export default function Appointment (props) {
     transition(SAVING);
     props
       .bookInterview(props.id, interview)
-      .then (() => {console.log("transition show")
+      .then (() => {
                     transition(SHOW)})
       .catch(err=>{console.log("error", err.message)
         transition(ERROR_SAVE, true)});
@@ -65,7 +65,7 @@ export default function Appointment (props) {
 
   return (
     <Fragment>
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time}/>
       {mode === EMPTY && (
         <Empty onAdd={() => transition(CREATE)} />
@@ -86,11 +86,11 @@ export default function Appointment (props) {
         )}  
       {mode === SAVING && (
         <Saving
-          message="saving"/>
+          message="Saving"/>
         )}
       {mode === DELETING && (
         <Deleting
-          message="deleting"/>
+          message="Deleting"/>
         )}
 
     {mode === CONFIRM && (
