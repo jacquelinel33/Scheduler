@@ -3,7 +3,6 @@ import React from "react";
 import "components/Button.scss";
 import classNames from "classnames";
 
-// show a confirmation button
 export default function Button(props) {
    const buttonClass = classNames (
       "button", {

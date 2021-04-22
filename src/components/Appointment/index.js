@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment} from 'react'
 import './styles.scss';
 import Header from './Header'
 import Show from './Show'

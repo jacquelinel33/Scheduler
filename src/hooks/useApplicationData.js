@@ -91,7 +91,6 @@ export default function useApplicationData() {
 };
 
 const updateSpots = (appointments) => {
-  // const newState = {...state}
 
   const currentDay = state.days.find(day => day.name === state.day);
   

@@ -5,7 +5,7 @@ export default function useVisualMode (initial) {
   const [history, setHistory] = useState([initial]);
   
   //advance to any other mode
-  //if replace, will remove last history (ex. error page so if use goes back, it does not go back to error)
+  //if replace, will remove last history (ex. if user is on error page and goes back, it does not return to error)
   function transition (newMode, replace) {
     setMode(newMode)
     if (replace) {

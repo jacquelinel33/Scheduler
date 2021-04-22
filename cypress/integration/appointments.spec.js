@@ -10,8 +10,8 @@ describe("Appointments", () => {
   it("should book an interview", () => {
 
     //need to pass with this removed. 
-    cy.get("[class=day-list__item]")
-      .click();
+    // cy.get("[class=day-list__item]")
+    //   .click();
 
     cy.get("[alt=Add]")
       .first()
@@ -58,9 +58,5 @@ describe("Appointments", () => {
 
     cy.contains(".appointment__card--show", "Archie Cohen")
       .should("not.exist");
-  })
-
-
-
-
+  });
 });
