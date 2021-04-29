@@ -13,6 +13,7 @@ export default function useVisualMode (initial) {
     } else {
       setHistory((prev) =>[...prev, newMode])
     }
+    console.log("History", history)
   }
 
   //return to previous mode
