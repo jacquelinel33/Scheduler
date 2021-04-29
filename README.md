@@ -4,11 +4,13 @@
 Interview Scheduler is a single page application(SPA) that allows users to create, edit, and delete appointments.  
 
 ## Main Page
-![Main]()
+![Main](https://github.com/jacquelinel33/Scheduler/blob/master/docs/main.png)
 
 ## Add Appointment
+![Form](https://github.com/jacquelinel33/Scheduler/blob/master/docs/form.png)
 
 ## Error Handling
+![Main](https://github.com/jacquelinel33/Scheduler/blob/master/docs/error.png)
 
 
 ## Setup
