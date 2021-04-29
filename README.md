@@ -1,5 +1,16 @@
 # Interview Scheduler
 
+## Project Description
+Interview Scheduler is a single page application(SPA) that allows users to create, edit, and delete appointments.  
+
+## Main Page
+![Main]()
+
+## Add Appointment
+
+## Error Handling
+
+
 ## Setup
 
 Install dependencies with `npm install`.
